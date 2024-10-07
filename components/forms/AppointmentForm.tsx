@@ -9,19 +9,22 @@ import { z } from "zod";
 
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "@/constants";
-import { createAppointment  } from "@/lib/actions/appointment.action";
+import {
+  createAppointment,
+  updateAppointment,
+} from "@/lib/actions/appointment.action";
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "@/types/appwrite.types";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 import CustomFormField from "../CustomFormField";
+import { FormFieldType } from "./PatientForm";
 import SubmitButton from "../ui/SubmitButton";
 import { Form } from "../ui/form";
-import { FormFieldType } from "./PatientForm";
 
- const AppointmentForm = ({
-  userId, 
+export const AppointmentForm = ({
+  userId,
   patientId,
   type = "create",
   appointment,
@@ -101,12 +104,12 @@ import { FormFieldType } from "./PatientForm";
           type,
         };
 
-      
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-        // if (updatedAppointment) {
-        //   setOpen && setOpen(false);
-        //   form.reset();
-        // }
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -216,6 +219,3 @@ import { FormFieldType } from "./PatientForm";
     </Form>
   );
 };
-
-
-export default AppointmentForm
